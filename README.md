@@ -1,29 +1,39 @@
-# Lumora Desktop — Rust + Tauri 2 (Windows & Linux)
+![Lumora Desktop — Rust + Tauri 2](assets/banner.svg)
 
-A production desktop application built with **Rust + Tauri 2**. It wraps a web
-frontend in a native window and ships as a **signed Windows installer (NSIS)** and
-**Linux packages (AppImage + .deb)**, with a built-in self‑updater.
+![Rust](https://img.shields.io/badge/Rust-stable-000000?logo=rust&logoColor=white)
+![Tauri](https://img.shields.io/badge/Tauri-2-24C8DB?logo=tauri&logoColor=white)
+![Windows](https://img.shields.io/badge/Windows-NSIS%20installer-0078D6?logo=windows&logoColor=white)
+![Linux](https://img.shields.io/badge/Linux-AppImage%20%7C%20deb-FCC624?logo=linux&logoColor=black)
+![Updates](https://img.shields.io/badge/auto--update-signed%20(minisign)-7C5CFF)
 
-> This repository showcases the **Rust / Tauri desktop layer** (the web frontend is
-> a separate project).
+A **production desktop application** built with **Rust + Tauri 2**. One Rust codebase
+produces a **signed Windows installer (NSIS)** and **Linux packages (AppImage + .deb)**,
+with a built-in **self-updater**.
+
+> This repository showcases the **Rust / Tauri desktop layer**. The web frontend is a
+> separate project; a small placeholder lives in `dist/` so this builds standalone.
 
 ---
 
-## Highlights (what the Rust layer does)
+## What I built
 
-- **Tauri 2 + Rust core** — a native `#[tauri::command]` (`src/main.rs`) that checks a
-  remote manifest and, if a newer version exists, **downloads and installs the update**
-  in the background via `tauri-plugin-updater`.
-- **Professional NSIS installer** — custom install/uninstall hooks
-  (`installer-hooks.nsh`), branded header/sidebar artwork, LZMA compression, and a
+- **One Rust codebase → three native bundles** — Windows `nsis`, Linux `appimage`, Linux
+  `deb`, all driven from a single `tauri.conf.json`.
+- **Signed self-updater** — a `#[tauri::command]` checks a JSON manifest over HTTPS and
+  **downloads + installs** new versions in the background (`tauri-plugin-updater` +
+  a minisign keypair).
+- **Professional installer UX** — a **branded NSIS installer** with custom pre/post
+  install hooks (`installer-hooks.nsh`), header/sidebar artwork, LZMA compression, and a
   **bundled WebView2 bootstrapper** so it installs cleanly on a fresh Windows machine.
-- **Cross-platform from one config** — Windows `nsis` + Linux `appimage` + `deb`
-  (`tauri.conf.json`).
-- **Size/performance-tuned Rust release profile** — `lto = true`, `codegen-units = 1`,
+- **Tuned for size & speed** — release profile with `lto = true`, `codegen-units = 1`,
   `opt-level = "s"`, `strip = true`, `panic = "abort"`.
-- **Capability-based security** (Tauri v2 `capabilities/`) — the app only gets the
-  permissions it declares.
-- **Signed auto-updates** — a minisign keypair + a JSON manifest served over HTTPS.
+- **Capability-based security** — the app only gets the permissions declared in
+  `capabilities/` (Tauri v2 model).
+
+## Skills demonstrated
+
+Rust · Tauri 2 · cross-platform packaging · NSIS scripting · code signing / secure
+updates · desktop UX · build automation.
 
 ## Tech stack
 
@@ -44,20 +54,19 @@ src-tauri/
   icons/                 # app + installer artwork
 dist/                    # tiny placeholder frontend (swap for your real web build)
 package.json             # npm scripts that drive the Tauri CLI
+assets/banner.svg
 ```
 
 ## Build
 
-Prerequisites: **Rust** (with the MSVC toolchain on Windows), **Node.js 18+**, and
-**VS Build Tools** (Windows).
+Prerequisites: **Rust** (MSVC toolchain on Windows), **Node.js 18+**, and **VS Build Tools**
+(Windows).
 
 ```bash
 npm install            # installs @tauri-apps/cli
 npm run tauri:dev      # run the desktop app in dev
 npm run tauri:build    # produce the native bundles
 ```
-
-Outputs:
 
 | Platform | Bundle |
 |----------|--------|
@@ -85,4 +94,4 @@ async fn check_update(app: tauri::AppHandle) -> Result<String, String> {
 
 ---
 
-*Built by mxgamecoder. Available for Rust / Tauri desktop work.*
+*Built by [mxgamecoder](https://github.com/mxgamecoder) — available for Rust / Tauri desktop work.*
