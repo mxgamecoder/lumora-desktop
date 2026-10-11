@@ -1,0 +1,8 @@
+{
+  "identifier": "default",
+  "description": "Minimal permissions for Lumora desktop. All feature-level permissions requested at runtime via JS permission dialog (permissions.js).",
+  "windows": ["main"],
+  "permissions": [
+    "core:default"
+  ]
+}
